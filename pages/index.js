@@ -1,38 +1,30 @@
-import React, { useState } from "react";
-import Layout from "../components/Layout";
-import axios from "axios";
+import React from "react";
+import getMovies from "../utils/get";
 
-const index = () => {
-  const [movies, setMovies] = useState(null);
-
-  const createMovies = async () => {
-    // setMovies(null);
-    // const { data } = await axios.get(`/api/create`);
-    // setMovies(data);
-  };
-
-  const readMovies = async () => {
-    // setMovies(null);
-    // const { data } = await axios.get(`/api/get`);
-    // setMovies(data);
-  };
-
+const Movies = ({ data, env }) => {
   return (
-    <Layout title="Shikuesi - Home">
-      <div>
-        <button onClick={createMovies}>Create Movies</button>
-        <button onClick={readMovies}>Read Movies</button>
+    <ul>
+      <li>{env}</li>
 
-        <ul>
-          {movies &&
-            movies.map((movie, index) => {
-              const { title } = movie;
-              return <li key={index}>{title}</li>;
-            })}
-        </ul>
-      </div>
-    </Layout>
+      {data &&
+        data.map((movie, index) => {
+          const { title } = movie;
+          return <li key={index}>{title}</li>;
+        })}
+    </ul>
   );
 };
 
-export default index;
+export const getServerSideProps = async () => {
+  const data = await getMovies();
+  const env = process.env.PROJECT_ID;
+
+  return {
+    props: {
+      data,
+      env,
+    },
+  };
+};
+
+export default Movies;
