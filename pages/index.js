@@ -1,11 +1,9 @@
 import React from "react";
 import getMovies from "../utils/get";
 
-const Movies = ({ data, env }) => {
+const Movies = ({ data }) => {
   return (
     <ul>
-      <li>{env}</li>
-
       {data &&
         data.map((movie, index) => {
           const { title } = movie;
@@ -17,12 +15,10 @@ const Movies = ({ data, env }) => {
 
 export const getServerSideProps = async () => {
   const data = await getMovies();
-  const env = process.env.PROJECT_ID;
 
   return {
     props: {
       data,
-      env,
     },
   };
 };
